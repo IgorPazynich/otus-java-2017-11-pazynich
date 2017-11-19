@@ -14,6 +14,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <mainClass>ru.otus.Main</mainClass>
     </properties>
 
     <dependencies>
@@ -22,6 +23,14 @@
             <artifactId>guava</artifactId>
             <version>23.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>net.sf.proguard</groupId>
+            <artifactId>proguard-base</artifactId>
+            <version>5.3.3</version>
+            <scope>runtime</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -34,7 +43,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>ru.otus.Main</mainClass>
+                            <mainClass>${mainClass}</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -45,7 +54,7 @@
                 <version>3.0.0</version>
                 <executions>
                     <execution>
-                        <id>my-maven-assembly-plugin</id>
+                        <!-- <id>my-maven-assembly-plugin</id> !-->
                         <phase>package</phase>
                         <goals>
                             <goal>single</goal>
@@ -59,11 +68,54 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>ru.otus.Main</mainClass>
+                            <mainClass>${mainClass}</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
             </plugin>
+
+
+            <plugin>
+                <groupId>com.github.wvengen</groupId>
+                <artifactId>proguard-maven-plugin</artifactId>
+                <version>2.0.14</version>
+                <executions>
+                    <execution>
+                        <configuration>
+                            <proguardVersion>5.3.3</proguardVersion>
+                            <options>
+                                <option>-target 1.8</option>
+                                <option>-dontnote</option>
+                                <option>-dontshrink</option>
+                                <option>-dontoptimize</option> <!--  !-->
+                                <option>-dontpreverify</option>
+                                <option>-dontskipnonpubliclibraryclasses</option>
+                                <option>-dontskipnonpubliclibraryclassmembers</option>
+                                <option>-allowaccessmodification</option>
+                                <option>-repackageclasses ''</option>
+                                <option>-keep public class ${mainClass} { public static void main(java.lang.String[]); }</option>
+                                <option>-keepclassmembers enum * { public static **[] values(); public static ** valueOf(java.lang.String); }</option>
+                                <option>-keepattributes InnerClasses,Signature,LineNumberTable,*Annotation*,EnclosingMethod</option>
+                                <option>-dontwarn org.spout.**</option>
+                                <option>-dontwarn com.google.**</option>
+                            </options>
+                            <includeDependency>false</includeDependency>
+                            <libs>
+                                <lib>${java.home}/lib/jce.jar</lib>
+                                <lib>${java.home}/lib/ext/jfxrt.jar</lib>
+                                <lib>${java.home}/lib/rt.jar</lib>
+                                </libs>
+                        </configuration>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>proguard</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
+            </plugin>
+
+
         </plugins>
     </build>
 
