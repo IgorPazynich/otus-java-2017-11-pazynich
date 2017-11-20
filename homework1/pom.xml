@@ -36,25 +36,13 @@
     <build>
         <finalName>${project.name}</finalName>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.0.0</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>${mainClass}</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.0.0</version>
                 <executions>
                     <execution>
-                        <!-- <id>my-maven-assembly-plugin</id> !-->
                         <phase>package</phase>
                         <goals>
                             <goal>single</goal>
@@ -85,10 +73,6 @@
                             <proguardVersion>5.3.3</proguardVersion>
                             <options>
                                 <option>-target 1.8</option>
-                                <option>-dontnote</option>
-                                <option>-dontshrink</option>
-                                <option>-dontoptimize</option> <!--  !-->
-                                <option>-dontpreverify</option>
                                 <option>-dontskipnonpubliclibraryclasses</option>
                                 <option>-dontskipnonpubliclibraryclassmembers</option>
                                 <option>-allowaccessmodification</option>
@@ -99,7 +83,7 @@
                                 <option>-dontwarn org.spout.**</option>
                                 <option>-dontwarn com.google.**</option>
                             </options>
-                            <includeDependency>false</includeDependency>
+                            <includeDependency>true</includeDependency>
                             <libs>
                                 <lib>${java.home}/lib/jce.jar</lib>
                                 <lib>${java.home}/lib/ext/jfxrt.jar</lib>
