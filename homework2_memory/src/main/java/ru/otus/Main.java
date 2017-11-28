@@ -6,9 +6,9 @@ import java.lang.management.ManagementFactory;
 public class Main {
     public static void main(String[] args) {
         System.out.println("pid: " + ManagementFactory.getRuntimeMXBean().getName());
-        objectSizeCounter objectMemCount = new objectSizeCounter(new Object().getClass());
-        objectSizeCounter stringMemCount = new objectSizeCounter(new String().getClass());
-        objectSizeCounter myClassMemCount = new objectSizeCounter(new MyClass().getClass());
+        ObjectSizeCounter objectMemCount = new ObjectSizeCounter(new Object().getClass());
+        ObjectSizeCounter stringMemCount = new ObjectSizeCounter(new String().getClass());
+        ObjectSizeCounter myClassMemCount = new ObjectSizeCounter(new MyClass().getClass());
         int i = 1;
         while (true) {
             System.out.println("Stage " + i + " begin");
@@ -16,6 +16,7 @@ public class Main {
             System.out.println("It is " + stringMemCount.countMem() + " bytes");
             System.out.println("It is " + myClassMemCount.countMem() + " bytes");
             System.out.println("Stage " + i + " end");
+            System.out.println("*********************************************************");
             i++;
         }
     }
