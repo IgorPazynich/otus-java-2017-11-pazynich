@@ -25,49 +25,67 @@ public class MyArrayList<T> implements List<T> {
     }
 
     private void elemAllocate(int addSize){
-        int increace = 0;
+        int increase = 0;
         while (nullElemCounter < addSize)
         {
-            size *= 2;
             nullElemCounter += size;
-            increace ++;
+            size *= 2;
+            increase ++;
         }
-        if (increace > 0){
+        if (increase > 0){
             myArray = Arrays.copyOf(myArray,size);
         }
+    }
 
+    private void checkBounds(int index) {
+        if (index < 0 && index > size()) {
+            throw new IndexOutOfBoundsException("The index is " + index + " , but the size of MyArrayList instance is " + size());
+        }
     }
 
     @Override
-    public boolean addAll(Collection<? extends T> c) {
-        if (c==null){
-        return false;
-        }
-        elemAllocate(c.size());
-        //myArray =
+    public boolean add(T t) {
+        elemAllocate(1);
+        myArray[size()] = t;
+        nullElemCounter--;
         return true;
     }
 
     @Override
+    public void add(int index, T element) {
+        checkBounds(index);
+        elemAllocate(1);
+        System.arraycopy(myArray, index,myArray, index+1, size()-index);
+        myArray[index] = element;
+        nullElemCounter--;
+    }
+
+    @Override
+    public boolean addAll(Collection<? extends T> c) {
+        return addAll(size(), c);
+    }
+
+    @Override
     public boolean addAll(int index, Collection<? extends T> c) {
-        return false;
+        if (c == null || c.size() == 0){
+            return false;
+        }
+        elemAllocate(c.size());
+        System.arraycopy(myArray, index, myArray, index + c.size(), size() - index);
+        System.arraycopy(c.toArray(),0, myArray, index, c.size());
+        nullElemCounter-=c.size();
+        return true;
     }
 
     @Override
     public void sort(Comparator<? super T> c) {
-        Arrays.sort((T[])myArray,c);
+       Arrays.sort((T[])myArray,0,size(),c);
     }
 
     @Override
     public T get(int index) {
         checkBounds(index);
         return (T) myArray[index];
-    }
-
-    private void checkBounds(int index) {
-        if (index < 0 && index > size) {
-            throw new IndexOutOfBoundsException("The index is " + index + " , but the size of MyArrayList instance is " + size);
-        }
     }
 
     @Override
@@ -79,97 +97,87 @@ public class MyArrayList<T> implements List<T> {
     }
 
     @Override
-    public int indexOf(Object o) {
-        return 0;
-    }
-
-    @Override
     public int size() {
-        return size;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return false;
-    }
-
-    @Override
-    public boolean contains(Object o) {
-        return false;
-    }
-
-    @Override
-    public Iterator<T> iterator() {
-        return null;
+        return size-nullElemCounter;
     }
 
     @Override
     public Object[] toArray() {
-        return new Object[0];
+        return Arrays.copyOf(myArray, size());
+    }
+
+    @Override
+    public int indexOf(Object o) {
+        throw new RuntimeException();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        throw new RuntimeException();
+    }
+
+    @Override
+    public boolean contains(Object o) {
+        throw new RuntimeException();
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        throw new RuntimeException();
     }
 
     @Override
     public <T1> T1[] toArray(T1[] a) {
-        return null;
-    }
-
-    @Override
-    public boolean add(T t) {
-        return false;
+        throw new RuntimeException();
     }
 
     @Override
     public boolean remove(Object o) {
-        return false;
+        throw new RuntimeException();
     }
 
     @Override
     public boolean containsAll(Collection<?> c) {
-        return false;
+        throw new RuntimeException();
     }
 
     @Override
     public boolean removeAll(Collection<?> c) {
-        return false;
+        throw new RuntimeException();
     }
 
     @Override
     public boolean retainAll(Collection<?> c) {
-        return false;
+        throw new RuntimeException();
     }
 
     @Override
     public void clear() {
-
-    }
-
-    @Override
-    public void add(int index, T element) {
-
+        throw new RuntimeException();
     }
 
     @Override
     public T remove(int index) {
-        return null;
+        throw new RuntimeException();
     }
 
     @Override
     public int lastIndexOf(Object o) {
-        return 0;
+        throw new RuntimeException();
     }
 
     @Override
     public ListIterator<T> listIterator() {
-        return null;
+        throw new RuntimeException();
     }
 
     @Override
     public ListIterator<T> listIterator(int index) {
-        return null;
+        throw new RuntimeException();
     }
 
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
-        return null;
+        throw new RuntimeException();
     }
 }
