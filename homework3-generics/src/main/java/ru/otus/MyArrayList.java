@@ -24,6 +24,15 @@ public class MyArrayList<T> implements List<T> {
         myArray = new Object[size];
     }
 
+    @Override
+    public String toString() {
+        String s = "";
+        for (int i = 0; i < this.size(); i++) {
+            s += this.get(i) + " ";
+        }
+        return s;
+    }
+
     private void elemAllocate(int addSize){
         int increase = 0;
         while (nullElemCounter < addSize)
@@ -107,6 +116,16 @@ public class MyArrayList<T> implements List<T> {
     }
 
     @Override
+    public ListIterator<T> listIterator() {
+        throw new RuntimeException();
+    }
+
+    @Override
+    public ListIterator<T> listIterator(int index) {
+        throw new RuntimeException();
+    }
+
+    @Override
     public int indexOf(Object o) {
         throw new RuntimeException();
     }
@@ -163,16 +182,6 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public int lastIndexOf(Object o) {
-        throw new RuntimeException();
-    }
-
-    @Override
-    public ListIterator<T> listIterator() {
-        throw new RuntimeException();
-    }
-
-    @Override
-    public ListIterator<T> listIterator(int index) {
         throw new RuntimeException();
     }
 
