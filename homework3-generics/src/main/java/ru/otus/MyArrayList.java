@@ -48,7 +48,7 @@ public class MyArrayList<T> implements List<T> {
 
     private void checkBounds(int index) {
         if (index < 0 && index > size()) {
-            throw new IndexOutOfBoundsException("The index is " + index + " , but the size of MyArrayList instance is " + size());
+            throw new IndexOutOfBoundsException("The index is " + index + ", but the size of MyArrayList instance is " + size());
         }
     }
 
@@ -117,12 +117,88 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public ListIterator<T> listIterator() {
-        throw new RuntimeException();
+        return new MyListItr(0);
     }
 
     @Override
     public ListIterator<T> listIterator(int index) {
-        throw new RuntimeException();
+        checkBounds(index);
+        return new MyListItr(index);
+    }
+
+    private class MyItr implements Iterator<T> {
+        int nextElem;
+        int lastElem = -1;
+
+        @Override
+        public boolean hasNext() {
+            return nextElem != size();
+        }
+
+        @Override
+        public T next() {
+            int i = nextElem;
+            if (i >= size())
+                throw new NoSuchElementException();
+            Object[] elementData = Arrays.copyOf(MyArrayList.this.myArray, size());
+            if (i >= elementData.length)
+                throw new ConcurrentModificationException();
+            nextElem = i + 1;
+            return (T) elementData[lastElem = i];
+        }
+
+        public void remove() {
+                MyArrayList.this.remove(lastElem);
+                nextElem = lastElem;
+                lastElem = -1;
+        }
+
+    }
+    private class MyListItr extends MyItr implements ListIterator<T> {
+        public MyListItr(int index) {
+            super();
+            nextElem = index;
+        }
+
+        @Override
+        public boolean hasPrevious() {
+            return nextElem != 0;
+        }
+
+        @Override
+        public T previous() {
+            int i = nextElem - 1;
+            if (i < 0)
+                throw new NoSuchElementException();
+            Object[] elementData = Arrays.copyOf(MyArrayList.this.myArray, size());
+            nextElem = i;
+            return (T) elementData[lastElem = i];
+        }
+
+        @Override
+        public int nextIndex() {
+            return nextElem;
+        }
+
+        @Override
+        public int previousIndex() {
+            return nextElem - 1;
+        }
+
+        @Override
+        public void set(T t) {
+            if (lastElem < 0)
+                throw new IllegalStateException();
+            MyArrayList.this.set(lastElem, t);
+        }
+
+        @Override
+        public void add(T t) {
+            int i = nextElem;
+            MyArrayList.this.add(i, t);
+            nextElem = i + 1;
+            lastElem = -1;
+        }
     }
 
     @Override
@@ -142,7 +218,7 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public Iterator<T> iterator() {
-        throw new RuntimeException();
+        return listIterator();
     }
 
     @Override
