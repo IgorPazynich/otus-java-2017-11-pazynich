@@ -40,7 +40,7 @@ public class MyTestFramework {
                     ReflectionHelper.callMethod(object, before);
                 }
                 ReflectionHelper.callMethod(object, test);
-                if (after=="after"){
+                if (after.equals("after")){
                     ReflectionHelper.callMethod(object, after);
                 }
                 System.out.println();
@@ -50,8 +50,7 @@ public class MyTestFramework {
 
     static void myPackageRunner (String pkgname){
         ArrayList<Class<?>> classes = new ArrayList<Class<?>>();
-        File directory = null;
-        String fullPath;
+        File directory;
         String relPath = pkgname.replace('.', '/');
         System.out.println("ClassDiscovery: Package: " + pkgname + " becomes Path:" + relPath);
         URL resource = ClassLoader.getSystemClassLoader().getResource(relPath);
@@ -59,7 +58,6 @@ public class MyTestFramework {
         if (resource == null) {
             throw new RuntimeException("No resource for " + relPath);
         }
-        fullPath = resource.getFile();
         System.out.println("ClassDiscovery: FullPath = " + resource);
 
         try {
