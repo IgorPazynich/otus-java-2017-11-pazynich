@@ -8,13 +8,13 @@
     <artifactId>homework5-annotations</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-<!--    <dependencies>
+    <dependencies>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>RELEASE</version>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.9.11</version>
         </dependency>
-    </dependencies>-->
+    </dependencies>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
